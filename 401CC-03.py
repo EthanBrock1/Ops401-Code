@@ -134,5 +134,4 @@ while True:
 #creates function for ping and status 
     ping_test
     time.sleep(2)
- break
     # End Code
