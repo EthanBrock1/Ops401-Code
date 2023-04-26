@@ -16,9 +16,13 @@
 ### NOT FINISHED
     # Start Code
 import os
+import tkinter as tk
+from tkinter import messagebox
 from cryptography.fernet import Fernet
+from PIL import Image, ImageDraw, ImageFont
 
 # Declare Functions
+
 def write_key():
     key = Fernet.generate_key()
     with open("key.key", "wb") as key_file:
@@ -28,23 +32,23 @@ def load_key():
     return open("key.key", "rb").read()
 
 def display_menu():
-    menu = ["1: Encrypt a file", "2: Decrypt a file", "3: Encrypt a message", "4: Decrypt a message", "5: Encrypt a folder", "6: Decrypt a folder", "7: Exit"]
+    menu = ["1: Encrypt a file", "2: Decrypt a file", "3: Encrypt a message", "4: Decrypt a message", "5: Ransomware simulation", "6: Exit"]
     for i in menu:
         print(i)
 
-def process_file(mode, file_path, key):
-    with open(file_path, "rb") as file:
+def process_file(mode, file_name, key):
+    with open(file_name, "rb") as file:
         file_data = file.read()
     fernet = Fernet(key)
 
     if mode == "1":
         encrypted = fernet.encrypt(file_data)
-        with open(file_path, "wb") as file:
+        with open(file_name, "wb") as file:
             file.write(encrypted)
         return encrypted
     elif mode == "2":
         decrypted = fernet.decrypt(file_data)
-        with open(file_path, "wb") as file:
+        with open(file_name, "wb") as file:
             file.write(decrypted)
         return decrypted
 
@@ -55,11 +59,20 @@ def process_message(mode, message, key):
     elif mode == "4":
         return fernet.decrypt(message.encode('utf-8'))
 
-def process_folder(mode, folder_path, key):
-    for root, dirs, files in os.walk(folder_path):
-        for file in files:
-            file_path = os.path.join(root, file)
-            process_file(mode, file_path, key)
+def ransomware_sim():
+    root = tk.Tk()
+    root.withdraw()
+    messagebox.showerror("Ransomware Alert", "Your computer has been infected with ransomware! Please pay $500 to unlock your files.")
+
+    bg_color = (0, 0, 0)
+    text_color = (255, 255, 255)
+    im = Image.new(mode = "RGB", size = (1920, 1080), color = bg_color)
+    draw = ImageDraw.Draw(im)
+    font = ImageFont.truetype("arial.ttf", 60)
+    draw.text((500, 500), "Your computer has been locked!", fill = text_color, font = font)
+    im.save("ransomware_wallpaper.jpg")
+    SPI_SETDESKWALLPAPER = 20
+    ctypes.windll.user32.SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, os.path.abspath("ransomware_wallpaper.jpg"), 0)
 
 # Generate and write a new key
 write_key()
@@ -72,8 +85,8 @@ while True:
     mode = input("Please select a mode: ")
 
     if mode in ["1", "2"]:
-        file_path = input("Enter file path: ")
-        processed_data = process_file(mode, file_path, key)
+        file_name = input("Enter file name: ")
+        processed_data = process_file(mode, file_name, key)
         if mode == "1":
             print("Encrypted message is: " + processed_data.decode('utf-8'))
         elif mode == "2":
@@ -86,14 +99,8 @@ while True:
         elif mode == "4":
             print("Decrypted message is: " + processed_data.decode('utf-8'))
     elif mode == "5":
-        folder_path = input("Enter folder path: ")
-        process_folder("1", folder_path, key)
-        print("Folder encrypted successfully!")
+        ransomware_sim()
     elif mode == "6":
-        folder_path = input("Enter folder path: ")
-        process_folder("2", folder_path, key)
-        print("Folder decrypted successfully!")
-    elif mode == "7":
-        exit()
+
 
     # End Code
