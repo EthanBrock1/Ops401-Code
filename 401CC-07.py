@@ -4,7 +4,7 @@
 # Author:Ethan Brock
 # Date of latest revision: 25APR2023
 # Purpose: 
-
+# Resources: Tyler and ChatGPT  
     #REQUIREMENTS
 #Add a feature capability to your script to:
 
