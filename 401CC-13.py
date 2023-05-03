@@ -6,7 +6,12 @@
 # Purpose: 
 # Credit: Me and Chatgpt
     #REQUIREMENTS
-
+#In Python, combine the two modes (port and ping) of your network scanner script.
+#Eliminate the choice of mode selection.
+#Continue to prompt the user for an IP address to target.
+#Move port scan to its own function.
+#Call the port scan function if the host is responsive to ICMP echo requests.
+#Print the output to the screen.
     #DEMO
 
 
